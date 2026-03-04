@@ -1,0 +1,21 @@
+# OpenClaw workspace files (not for GitHub)
+.clawhub/
+.openclaw/
+AGENTS.md
+BOOTSTRAP.md
+HEARTBEAT.md
+IDENTITY.md
+MEMORY.md
+SOUL.md
+TOOLS.md
+USER.md
+memory/
+scripts/
+skills/
+digests/
+*.md
+!README.md
+
+# System files
+.DS_Store
+Thumbs.db

@@ -23,7 +23,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
         }
 
 
@@ -32,17 +34,45 @@
             text-align: center;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 30px;
-            padding: 40px;
+            padding: 30px 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             max-width: 600px;
             width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         h1 {
             color: #333;
             margin-bottom: 10px;
-            font-size: 2.5em;
+            font-size: 2em;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6em;
+            }
+            
+            .slot-machine {
+                padding: 20px;
+                margin: 20px 0;
+            }
+            
+            .slot-item {
+                font-size: 2.5em;
+            }
+            
+            .spin-btn {
+                padding: 20px 50px;
+                font-size: 1.4em;
+            }
+            
+            .options-input {
+                font-size: 14px;
+            }
         }
 
         .subtitle {
