@@ -2,213 +2,99 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🎰 今天吃什么 - 外卖老虎机</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.85) 0%, rgba(118, 75, 162, 0.85) 100%),
-                        url('food-bg.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 15px;
             overflow-x: hidden;
-            -webkit-text-size-adjust: 100%;
         }
-
-
 
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
-            padding: 30px 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            padding: 25px 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
             width: 100%;
-            max-height: 95vh;
+            max-height: 90vh;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
 
         h1 {
             color: #333;
-            margin-bottom: 10px;
-            font-size: 2em;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        /* 移动端优化 */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.6em;
-            }
-            
-            .slot-machine {
-                padding: 20px;
-                margin: 20px 0;
-            }
-            
-            .slot-item {
-                font-size: 2.5em;
-            }
-            
-            .spin-btn {
-                padding: 20px 50px;
-                font-size: 1.4em;
-            }
-            
-            .options-input {
-                font-size: 14px;
-            }
+            margin-bottom: 8px;
+            font-size: 1.8em;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .subtitle {
             color: #666;
-            margin-bottom: 30px;
-            font-size: 1.1em;
+            margin-bottom: 25px;
+            font-size: 0.95em;
         }
 
-        /* 老虎机主体造型 */
+        /* 老虎机主体 */
         .slot-machine {
             position: relative;
             background: linear-gradient(180deg, #c0392b 0%, #8e44ad 50%, #2c3e50 100%);
-            border-radius: 30px;
-            padding: 40px;
-            margin: 30px 0;
+            border-radius: 25px;
+            padding: 25px;
+            margin: 20px 0;
             box-shadow: 
-                inset 0 10px 30px rgba(255, 255, 255, 0.3),
-                inset 0 -10px 30px rgba(0, 0, 0, 0.5),
-                0 20px 60px rgba(0, 0, 0, 0.6),
-                0 0 0 15px #f39c12,
-                0 0 0 20px #e74c3c,
-                0 0 0 25px #c0392b,
-                0 0 100px rgba(243, 156, 18, 0.8);
-            border: 8px solid #f39c12;
-            transform: perspective(1000px) rotateX(5deg);
-            transform-style: preserve-3d;
+                0 15px 40px rgba(0, 0, 0, 0.5),
+                0 0 0 10px #f39c12,
+                0 0 0 15px #e74c3c,
+                0 0 80px rgba(243, 156, 18, 0.6);
+            border: 5px solid #f39c12;
         }
 
-        /* 老虎机顶部装饰 */
         .slot-machine::before {
             content: '🎰 LUCKY EAT 🎰';
             position: absolute;
-            top: -50px;
+            top: -40px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 2em;
+            font-size: 1.5em;
             font-weight: bold;
             color: #f39c12;
-            text-shadow: 
-                0 0 10px #f39c12,
-                0 0 20px #f39c12,
-                0 0 30px #e74c3c,
-                0 0 40px #e74c3c;
+            text-shadow: 0 0 15px #f39c12, 0 0 25px #e74c3c;
             white-space: nowrap;
-            animation: neonPulse 1.5s ease-in-out infinite alternate;
         }
 
-        /* 老虎机两侧装饰灯 */
-        .slot-machine::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 30px;
-            background: 
-                linear-gradient(90deg, 
-                    transparent 0%, 
-                    rgba(243, 156, 18, 0.3) 10%, 
-                    transparent 20%,
-                    transparent 80%,
-                    rgba(243, 156, 18, 0.3) 90%,
-                    transparent 100%);
-            pointer-events: none;
-            animation: lightsFlash 0.5s linear infinite;
-        }
-
-        @keyframes neonPulse {
-            0% { 
-                text-shadow: 
-                    0 0 10px #f39c12,
-                    0 0 20px #f39c12,
-                    0 0 30px #e74c3c,
-                    0 0 40px #e74c3c;
-                transform: translateX(-50%) scale(1);
-            }
-            100% { 
-                text-shadow: 
-                    0 0 20px #f39c12,
-                    0 0 40px #f39c12,
-                    0 0 60px #e74c3c,
-                    0 0 80px #e74c3c,
-                    0 0 100px #f39c12;
-                transform: translateX(-50%) scale(1.05);
-            }
-        }
-
-        @keyframes lightsFlash {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        /* 卷轴窗口 */
         .slot-window {
-            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-            border-radius: 20px;
-            padding: 50px 30px;
-            min-height: 200px;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 15px;
+            padding: 30px 20px;
+            min-height: 150px;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             position: relative;
             box-shadow: 
-                inset 0 10px 30px rgba(0, 0, 0, 0.8),
-                inset 0 0 50px rgba(0, 0, 0, 0.5),
-                0 0 30px rgba(243, 156, 18, 0.5);
-            border: 5px solid #f39c12;
-            border-top: 8px solid #e74c3c;
-            border-bottom: 8px solid #e74c3c;
+                inset 0 5px 20px rgba(0, 0, 0, 0.8),
+                0 0 20px rgba(243, 156, 18, 0.4);
+            border: 3px solid #f39c12;
         }
 
-        /* 卷轴上下遮罩 */
-        .slot-window::before,
-        .slot-window::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 60px;
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .slot-window::before {
-            top: 0;
-            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
-        }
-
-        .slot-window::after {
-            bottom: 0;
-            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
-        }
-
-        /* 卷轴内容容器 */
         .slot-reel {
             display: flex;
             flex-direction: column;
@@ -216,117 +102,65 @@
             justify-content: center;
             position: relative;
             width: 100%;
-            height: 200px;
+            height: 150px;
             overflow: hidden;
         }
 
-        /* 滚动条带 */
         .reel-strip {
             display: flex;
             flex-direction: column;
             align-items: center;
             position: absolute;
-            transition: transform 0.1s linear;
+            will-change: transform;
         }
 
-        /* 单个食物项 */
         .reel-item {
-            font-size: 3em;
+            font-size: 2em;
             font-weight: bold;
-            background: linear-gradient(180deg, #f39c12 0%, #e74c3c 50%, #f39c12 100%);
+            background: linear-gradient(180deg, #f39c12 0%, #e74c3c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-align: center;
-            filter: drop-shadow(0 0 15px rgba(243, 156, 18, 0.8));
-            min-height: 80px;
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px 20px;
+            padding: 5px 15px;
         }
 
-        /* 当前显示的食物 */
         .slot-item {
-            font-size: 3.5em;
+            font-size: 2.5em;
             font-weight: bold;
-            background: linear-gradient(180deg, #f39c12 0%, #e74c3c 50%, #f39c12 100%);
+            background: linear-gradient(180deg, #f39c12 0%, #e74c3c 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-align: center;
-            filter: drop-shadow(0 0 20px rgba(243, 156, 18, 0.8));
-            animation: none;
-            min-width: 300px;
+            filter: drop-shadow(0 0 15px rgba(243, 156, 18, 0.6));
+            min-width: 250px;
             position: relative;
             z-index: 10;
         }
 
         .slot-item.spinning {
-            animation: spinBlur 0.08s linear infinite;
-            filter: blur(5px) drop-shadow(0 0 30px rgba(243, 156, 18, 1));
+            animation: spinBlur 0.1s linear infinite;
         }
 
         .slot-item.winner {
-            animation: winnerCelebrate 0.3s ease-in-out infinite alternate;
-            filter: drop-shadow(0 0 50px rgba(231, 76, 60, 1))
-                    drop-shadow(0 0 100px rgba(243, 156, 18, 0.8));
-            transform: scale(1.3);
+            animation: winnerCelebrate 0.4s ease-in-out infinite alternate;
         }
 
-        /* 滚动动画 */
         @keyframes spinBlur {
-            0% { 
-                transform: translateY(-10px) scaleY(0.9);
-                filter: blur(8px);
-                opacity: 0.7;
-            }
-            50% { 
-                transform: translateY(10px) scaleY(1.1);
-                filter: blur(3px);
-                opacity: 0.9;
-            }
-            100% { 
-                transform: translateY(-10px) scaleY(0.9);
-                filter: blur(8px);
-                opacity: 0.7;
-            }
+            0%, 100% { filter: blur(5px); opacity: 0.7; }
+            50% { filter: blur(2px); opacity: 0.9; }
         }
 
         @keyframes winnerCelebrate {
-            0% { 
-                transform: scale(1.3) rotate(-8deg);
-                filter: drop-shadow(0 0 50px rgba(231, 76, 60, 1))
-                        drop-shadow(0 0 100px rgba(243, 156, 18, 0.8));
-            }
-            100% { 
-                transform: scale(1.3) rotate(8deg);
-                filter: drop-shadow(0 0 50px rgba(231, 76, 60, 1))
-                        drop-shadow(0 0 150px rgba(243, 156, 18, 1));
-            }
+            0% { transform: scale(1.2) rotate(-5deg); }
+            100% { transform: scale(1.2) rotate(5deg); }
         }
 
-        /* 滚动时的模糊轨迹效果 */
-        .spin-trail {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(180deg, 
-                rgba(243, 156, 18, 0.3) 0%, 
-                transparent 50%, 
-                rgba(231, 76, 60, 0.3) 100%);
-            animation: trailPulse 0.1s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes trailPulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* 中奖光芒效果 */
         .win-glow {
             position: absolute;
             top: 50%;
@@ -334,42 +168,76 @@
             transform: translate(-50%, -50%);
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(243, 156, 18, 0.8) 0%, transparent 70%);
-            animation: glowPulse 0.5s ease-in-out infinite alternate;
+            background: radial-gradient(circle, rgba(243, 156, 18, 0.6) 0%, transparent 70%);
+            animation: glowPulse 0.6s ease-in-out infinite alternate;
             pointer-events: none;
             z-index: 5;
+            display: none;
         }
 
         @keyframes glowPulse {
-            0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            0% { opacity: 0.4; }
+            100% { opacity: 0.8; }
         }
 
-        /* 拉杆按钮造型 */
+        /* 拉杆 */
+        .lever-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .lever {
+            width: 15px;
+            height: 80px;
+            background: linear-gradient(90deg, #8e44ad 0%, #9b59b6 100%);
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .lever::before {
+            content: '🔴';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.5em;
+        }
+
+        .lever.pulling {
+            animation: leverPull 0.4s ease-in-out;
+        }
+
+        @keyframes leverPull {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(25deg); }
+        }
+
+        /* 按钮 */
         .spin-btn {
             position: relative;
-            background: linear-gradient(180deg, #f39c12 0%, #e67e22 50%, #d35400 100%);
+            background: linear-gradient(180deg, #f39c12 0%, #e67e22 100%);
             color: white;
             border: none;
-            padding: 25px 80px;
-            font-size: 1.8em;
+            padding: 18px 50px;
+            font-size: 1.4em;
             font-weight: bold;
-            border-radius: 50px;
+            border-radius: 40px;
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 
-                0 10px 30px rgba(243, 156, 18, 0.5),
-                0 0 0 8px rgba(243, 156, 18, 0.3),
-                inset 0 5px 20px rgba(255, 255, 255, 0.3),
-                inset 0 -5px 20px rgba(0, 0, 0, 0.3);
+                0 8px 25px rgba(243, 156, 18, 0.4),
+                inset 0 3px 10px rgba(255, 255, 255, 0.3);
             text-transform: uppercase;
-            letter-spacing: 3px;
-            margin: 30px 0;
-            text-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+            margin: 20px 0;
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
             overflow: hidden;
         }
 
-        /* 按钮光泽效果 */
         .spin-btn::before {
             content: '';
             position: absolute;
@@ -377,12 +245,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.3) 50%,
-                transparent 70%
-            );
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
             transform: rotate(45deg);
             animation: btnShine 3s ease-in-out infinite;
         }
@@ -393,96 +256,37 @@
         }
 
         .spin-btn:hover:not(:disabled) {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 
-                0 15px 40px rgba(243, 156, 18, 0.7),
-                0 0 0 12px rgba(243, 156, 18, 0.4),
-                inset 0 5px 20px rgba(255, 255, 255, 0.4),
-                inset 0 -5px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px) scale(1.03);
         }
 
         .spin-btn:active:not(:disabled) {
-            transform: translateY(3px) scale(0.98);
-            box-shadow: 
-                0 5px 15px rgba(243, 156, 18, 0.5),
-                0 0 0 8px rgba(243, 156, 18, 0.3),
-                inset 0 5px 20px rgba(255, 255, 255, 0.3),
-                inset 0 -5px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(2px) scale(0.98);
         }
 
         .spin-btn:disabled {
-            background: linear-gradient(180deg, #95a5a6 0%, #7f8c8d 50%, #34495e 100%);
+            background: linear-gradient(180deg, #95a5a6 0%, #7f8c8d 100%);
             cursor: not-allowed;
-            box-shadow: 
-                0 5px 15px rgba(0, 0, 0, 0.3),
-                inset 0 5px 20px rgba(255, 255, 255, 0.1),
-                inset 0 -5px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .spin-btn:disabled::before {
-            animation: none;
-        }
-
-        /* 拉杆装饰 */
-        .lever-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px 0;
-        }
-
-        .lever {
-            width: 20px;
-            height: 100px;
-            background: linear-gradient(90deg, #8e44ad 0%, #9b59b6 50%, #8e44ad 100%);
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 
-                0 5px 15px rgba(0, 0, 0, 0.5),
-                inset 0 2px 5px rgba(255, 255, 255, 0.3);
-        }
-
-        .lever::before {
-            content: '🔴';
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 3em;
-            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.5));
-        }
-
-        .lever.pulling {
-            animation: leverPull 0.5s ease-in-out;
-        }
-
-        @keyframes leverPull {
-            0% { transform: rotate(0deg); }
-            50% { transform: rotate(30deg); }
-            100% { transform: rotate(0deg); }
-        }
-
+        /* 选项区域 */
         .options-section {
-            margin-top: 30px;
+            margin-top: 25px;
             text-align: left;
         }
 
         .options-section h3 {
             color: #333;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 1.1em;
         }
 
         .options-input {
             width: 100%;
-            min-height: 150px;
-            padding: 15px;
+            min-height: 120px;
+            padding: 12px;
             border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1em;
+            border-radius: 8px;
+            font-size: 14px;
             font-family: inherit;
             resize: vertical;
             transition: border-color 0.3s ease;
@@ -495,31 +299,54 @@
 
         .options-hint {
             color: #888;
-            font-size: 0.9em;
-            margin-top: 10px;
+            font-size: 0.85em;
+            margin-top: 8px;
         }
 
-        /* 中奖弹窗特效 */
+        /* 统计 */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.85em;
+        }
+
+        /* 弹窗 */
         .result-popup {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0) rotate(-10deg);
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ff6b6b 100%);
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            padding: 50px 80px;
-            border-radius: 40px;
-            font-size: 3em;
+            padding: 40px 60px;
+            border-radius: 30px;
+            font-size: 2.5em;
             font-weight: bold;
             box-shadow: 
-                0 30px 80px rgba(0, 0, 0, 0.5),
-                0 0 0 10px rgba(255, 255, 255, 0.3),
-                0 0 100px rgba(240, 147, 251, 0.8),
-                inset 0 5px 20px rgba(255, 255, 255, 0.4);
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 80px rgba(240, 147, 251, 0.6);
             z-index: 1000;
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border: 5px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            border: 4px solid rgba(255, 255, 255, 0.4);
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
@@ -536,160 +363,37 @@
             opacity: 0;
         }
 
-        .result-popup::before {
-            content: '🎉';
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 4em;
-            animation: bounce 0.5s ease-in-out infinite alternate;
-        }
-
-        @keyframes bounce {
-            0% { transform: translateX(-50%) translateY(0); }
-            100% { transform: translateX(-50%) translateY(-20px); }
-        }
-
-        /* 烟花粒子 */
-        .firework {
-            position: fixed;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            animation: fireworkExplode 1s ease-out forwards;
-            z-index: 999;
-        }
-
-        @keyframes fireworkExplode {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(0);
-                opacity: 0;
-            }
-        }
-
-        /* 彩带效果 */
+        /* 粒子效果 */
         .confetti {
-            position: fixed;
-            width: 12px;
-            height: 12px;
-            background: #f00;
-            animation: confettiFall 3s ease-out forwards;
-            z-index: 998;
-            border-radius: 2px;
-        }
-
-        @keyframes confettiFall {
-            0% {
-                transform: translateY(0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg) scale(0.5);
-                opacity: 0;
-            }
-        }
-
-        /* 星星闪烁效果 */
-        .star {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background: radial-gradient(circle, #fff 0%, transparent 70%);
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            animation: starTwinkle 1.5s ease-in-out infinite;
-            z-index: 997;
-        }
-
-        @keyframes starTwinkle {
-            0%, 100% { opacity: 0.3; transform: scale(1) rotate(0deg); }
-            50% { opacity: 1; transform: scale(1.5) rotate(180deg); }
-        }
-
-        /* 爆炸光芒 */
-        .explosion {
             position: fixed;
             width: 10px;
             height: 10px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #fff 0%, #f39c12 50%, transparent 100%);
-            animation: explode 0.8s ease-out forwards;
-            z-index: 999;
-        }
-
-        @keyframes explode {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(50);
-                opacity: 0;
-            }
-        }
-
-        /* 金币掉落效果 */
-        .coin {
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            background: radial-gradient(circle, #f39c12 0%, #e67e22 50%, #d35400 100%);
-            border-radius: 50%;
-            border: 3px solid #f1c40f;
-            animation: coinDrop 2s ease-out forwards;
+            animation: confettiFall 2.5s ease-out forwards;
             z-index: 998;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #fff;
-            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.6);
         }
 
-        @keyframes coinDrop {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
 
         .footer {
-            margin-top: 30px;
-            color: #888;
-            font-size: 0.9em;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
             margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .stat-label {
             color: #888;
-            font-size: 0.9em;
+            font-size: 0.8em;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.5em; }
+            .subtitle { font-size: 0.85em; }
+            .slot-machine { padding: 20px 15px; }
+            .slot-machine::before { font-size: 1.2em; top: -35px; }
+            .slot-window { padding: 25px 15px; min-height: 120px; }
+            .slot-item { font-size: 2em; min-width: 200px; }
+            .reel-item { font-size: 1.6em; min-height: 50px; }
+            .spin-btn { padding: 15px 40px; font-size: 1.2em; }
+            .container { padding: 20px 15px; }
         }
     </style>
 </head>
@@ -703,8 +407,7 @@
                 <div class="slot-reel">
                     <div class="reel-strip" id="reelStrip"></div>
                     <div class="slot-item" id="slotItem">🎰 准备</div>
-                    <div class="win-glow" id="winGlow" style="display: none;"></div>
-                    <div class="spin-trail" id="spinTrail" style="display: none;"></div>
+                    <div class="win-glow" id="winGlow"></div>
                 </div>
             </div>
         </div>
@@ -755,7 +458,7 @@
             </div>
         </div>
 
-        <p class="footer">💋 Made with love by Hailey for Jacy | 🍔 美食背景</p>
+        <p class="footer">💋 Made with love by Hailey for Jacy</p>
     </div>
 
     <div class="result-popup" id="resultPopup"></div>
@@ -765,16 +468,12 @@
         let spinCount = parseInt(localStorage.getItem('takeoutSpinCount')) || 0;
         let options = [];
 
-        // 初始化
         function init() {
             updateSpinCount();
             loadOptions();
             updateOptionCount();
         }
 
-
-
-        // 加载选项
         function loadOptions() {
             const saved = localStorage.getItem('takeoutOptions');
             if (saved) {
@@ -783,7 +482,6 @@
             updateOptions();
         }
 
-        // 更新选项列表
         function updateOptions() {
             const text = document.getElementById('optionsInput').value;
             options = text.split('\n').filter(line => line.trim());
@@ -791,22 +489,18 @@
             updateOptionCount();
         }
 
-        // 监听输入变化
         document.getElementById('optionsInput').addEventListener('input', () => {
             updateOptions();
         });
 
-        // 更新选项计数
         function updateOptionCount() {
             document.getElementById('optionCount').textContent = options.length;
         }
 
-        // 更新旋转计数
         function updateSpinCount() {
             document.getElementById('spinCount').textContent = spinCount;
         }
 
-        // 老虎机旋转（改进版 - 显示食物滚动动画）
         function spin() {
             if (isSpinning) return;
             if (options.length === 0) {
@@ -820,11 +514,9 @@
             const lever = document.getElementById('lever');
             const winGlow = document.getElementById('winGlow');
             const reelStrip = document.getElementById('reelStrip');
-            const spinTrail = document.getElementById('spinTrail');
             
-            // 拉杆动画
             lever.classList.add('pulling');
-            setTimeout(() => lever.classList.remove('pulling'), 500);
+            setTimeout(() => lever.classList.remove('pulling'), 400);
             
             spinBtn.disabled = true;
             spinBtn.textContent = '🎰 选择中...';
@@ -832,12 +524,9 @@
             slotItem.classList.remove('winner');
             winGlow.style.display = 'none';
             
-            // 显示滚动条带和轨迹
-            spinTrail.style.display = 'block';
+            // 创建滚动食物
             reelStrip.innerHTML = '';
-            
-            // 创建滚动的食物列表（重复多次形成循环效果）
-            const totalItems = 30;
+            const totalItems = 25;
             for (let i = 0; i < totalItems; i++) {
                 const randomIndex = Math.floor(Math.random() * options.length);
                 const item = document.createElement('div');
@@ -848,230 +537,76 @@
             
             // 滚动动画
             let currentPosition = 0;
-            const itemHeight = 80;
+            const itemHeight = 50;
             const totalHeight = totalItems * itemHeight;
-            let speed = 15;
+            let speed = 12;
             let elapsed = 0;
-            const totalDuration = 4000;
+            const totalDuration = 3500;
             
             const scrollInterval = setInterval(() => {
                 elapsed += 100;
                 
-                // 逐渐减速
-                if (elapsed > totalDuration * 0.3) {
-                    speed *= 0.92;
-                }
-                
-                if (elapsed > totalDuration * 0.7) {
-                    speed *= 0.85;
-                }
+                if (elapsed > totalDuration * 0.3) speed *= 0.92;
+                if (elapsed > totalDuration * 0.7) speed *= 0.85;
                 
                 currentPosition += speed;
-                
-                // 循环滚动
-                if (currentPosition >= totalHeight) {
-                    currentPosition = 0;
-                }
+                if (currentPosition >= totalHeight) currentPosition = 0;
                 
                 reelStrip.style.transform = `translateY(-${currentPosition}px)`;
                 
-                // 更新中间显示的食物（取当前滚动位置附近的食物）
                 const currentIndex = Math.floor(currentPosition / itemHeight) % options.length;
                 slotItem.textContent = options[currentIndex];
 
                 if (elapsed >= totalDuration) {
                     clearInterval(scrollInterval);
-                    // 最终随机选择一个食物
                     const finalIndex = Math.floor(Math.random() * options.length);
                     slotItem.textContent = options[finalIndex];
-                    
-                    // 清理滚动条带
                     reelStrip.innerHTML = '';
-                    spinTrail.style.display = 'none';
+                    slotItem.classList.remove('spinning');
+                    slotItem.classList.add('winner');
+                    winGlow.style.display = 'block';
+                    spinBtn.disabled = false;
+                    spinBtn.textContent = '🎲 再选一次';
+                    isSpinning = false;
                     
-                    finalizeSelection(slotItem, spinBtn, winGlow);
+                    spinCount++;
+                    localStorage.setItem('takeoutSpinCount', spinCount);
+                    updateSpinCount();
+                    
+                    showResult(options[finalIndex]);
+                    createConfetti();
                 }
             }, 100);
         }
 
-        // 完成选择
-        function finalizeSelection(slotItem, spinBtn, winGlow) {
-            const finalIndex = Math.floor(Math.random() * options.length);
-            const result = options[finalIndex];
-            
-            slotItem.textContent = result;
-            slotItem.classList.remove('spinning');
-            slotItem.classList.add('winner');
-            
-            // 显示中奖光芒
-            winGlow.style.display = 'block';
-            
-            spinBtn.disabled = false;
-            spinBtn.textContent = '🎲 再选一次';
-            
-            isSpinning = false;
-
-            // 增加计数
-            spinCount++;
-            localStorage.setItem('takeoutSpinCount', spinCount);
-            updateSpinCount();
-
-            // 显示结果弹窗
-            showResult(result);
-            
-            // 炫酷特效组合
-            createConfetti();
-            createFireworks();
-            createStars();
-            createExplosions();
-            createCoins();
-        }
-
-        // 烟花特效
-        function createFireworks() {
-            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f', '#f90', '#90f', '#fff'];
-            
-            for (let i = 0; i < 5; i++) {
-                setTimeout(() => {
-                    const startX = Math.random() * window.innerWidth;
-                    const startY = Math.random() * (window.innerHeight / 2);
-                    
-                    for (let j = 0; j < 20; j++) {
-                        const firework = document.createElement('div');
-                        firework.className = 'firework';
-                        firework.style.left = startX + 'px';
-                        firework.style.top = startY + 'px';
-                        firework.style.background = colors[Math.floor(Math.random() * colors.length)];
-                        
-                        const angle = (j / 20) * 360;
-                        const velocity = 100 + Math.random() * 100;
-                        const tx = Math.cos(angle * Math.PI / 180) * velocity;
-                        const ty = Math.sin(angle * Math.PI / 180) * velocity;
-                        
-                        firework.style.transform = `translate(${tx}px, ${ty}px)`;
-                        document.body.appendChild(firework);
-                        
-                        setTimeout(() => firework.remove(), 1000);
-                    }
-                }, i * 300);
-            }
-        }
-
-        // 星星特效
-        function createStars() {
-            for (let i = 0; i < 15; i++) {
-                setTimeout(() => {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    star.style.left = Math.random() * 100 + 'vw';
-                    star.style.top = Math.random() * 100 + 'vh';
-                    star.style.animationDelay = Math.random() * 0.5 + 's';
-                    document.body.appendChild(star);
-                    
-                    setTimeout(() => star.remove(), 3000);
-                }, i * 200);
-            }
-        }
-
-        // 爆炸光芒特效
-        function createExplosions() {
-            const positions = [
-                { x: 50, y: 50 },
-                { x: 20, y: 30 },
-                { x: 80, y: 30 },
-                { x: 30, y: 70 },
-                { x: 70, y: 70 }
-            ];
-            
-            positions.forEach((pos, index) => {
-                setTimeout(() => {
-                    const explosion = document.createElement('div');
-                    explosion.className = 'explosion';
-                    explosion.style.left = pos.x + '%';
-                    explosion.style.top = pos.y + '%';
-                    document.body.appendChild(explosion);
-                    
-                    setTimeout(() => explosion.remove(), 800);
-                }, index * 200);
-            });
-        }
-
-        // 金币掉落特效
-        function createCoins() {
-            for (let i = 0; i < 10; i++) {
-                setTimeout(() => {
-                    const coin = document.createElement('div');
-                    coin.className = 'coin';
-                    coin.textContent = '¥';
-                    coin.style.left = (10 + i * 9) + '%';
-                    coin.style.animationDelay = (i * 0.1) + 's';
-                    document.body.appendChild(coin);
-                    
-                    setTimeout(() => coin.remove(), 2000);
-                }, i * 150);
-            }
-        }
-
-        // 显示结果弹窗
         function showResult(result) {
             const popup = document.getElementById('resultPopup');
-            popup.innerHTML = `🎉 就吃<br/><span style="font-size: 1.2em; display: block; margin-top: 20px;">${result}</span>！`;
+            popup.innerHTML = `🎉 就吃<br/><span style="font-size: 0.5em; display: block; margin-top: 15px;">${result}</span>！`;
             popup.classList.remove('hide');
             popup.classList.add('show');
             
-            // 弹窗震动效果
-            let shakeCount = 0;
-            const shakeInterval = setInterval(() => {
-                popup.style.transform = `translate(-50%, -50%) rotate(${shakeCount % 2 === 0 ? -5 : 5}deg)`;
-                shakeCount++;
-                if (shakeCount > 5) {
-                    clearInterval(shakeInterval);
-                    popup.style.transform = 'translate(-50%, -50%) rotate(0deg)';
-                }
-            }, 100);
-            
-            // 2.5 秒后自动隐藏
             setTimeout(() => {
                 popup.classList.remove('show');
                 popup.classList.add('hide');
             }, 2500);
         }
 
-        // 撒花效果（增强版）
         function createConfetti() {
-            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f', '#f90', '#90f', '#fff', '#f39c12', '#e74c3c'];
-            const shapes = ['square', 'circle', 'triangle'];
+            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#0ff', '#f0f', '#f90', '#90f', '#fff', '#f39c12'];
             
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 60; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
                     confetti.className = 'confetti';
                     confetti.style.left = Math.random() * 100 + 'vw';
                     confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    confetti.style.animationDelay = (Math.random() * 0.5) + 's';
-                    
-                    // 随机形状
-                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
-                    if (shape === 'circle') {
-                        confetti.style.borderRadius = '50%';
-                    } else if (shape === 'triangle') {
-                        confetti.style.width = '0';
-                        confetti.style.height = '0';
-                        confetti.style.background = 'transparent';
-                        confetti.style.borderLeft = '6px solid transparent';
-                        confetti.style.borderRight = '6px solid transparent';
-                        confetti.style.borderBottom = `12px solid ${colors[Math.floor(Math.random() * colors.length)]}`;
-                    }
-                    
+                    confetti.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
                     document.body.appendChild(confetti);
-                    
-                    setTimeout(() => confetti.remove(), 4000);
-                }, i * 30);
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 40);
             }
         }
 
-        // 页面加载时初始化
         init();
     </script>
 </body>
