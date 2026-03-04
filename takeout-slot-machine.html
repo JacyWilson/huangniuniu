@@ -178,15 +178,45 @@
             background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
         }
 
-        /* 卷轴内容 */
+        /* 卷轴内容容器 */
         .slot-reel {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
         }
 
+        /* 滚动条带 */
+        .reel-strip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            transition: transform 0.1s linear;
+        }
+
+        /* 单个食物项 */
+        .reel-item {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(180deg, #f39c12 0%, #e74c3c 50%, #f39c12 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            filter: drop-shadow(0 0 15px rgba(243, 156, 18, 0.8));
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+        }
+
+        /* 当前显示的食物 */
         .slot-item {
             font-size: 3.5em;
             font-weight: bold;
@@ -198,6 +228,8 @@
             filter: drop-shadow(0 0 20px rgba(243, 156, 18, 0.8));
             animation: none;
             min-width: 300px;
+            position: relative;
+            z-index: 10;
         }
 
         .slot-item.spinning {
@@ -212,6 +244,7 @@
             transform: scale(1.3);
         }
 
+        /* 滚动动画 */
         @keyframes spinBlur {
             0% { 
                 transform: translateY(-10px) scaleY(0.9);
@@ -241,6 +274,26 @@
                 filter: drop-shadow(0 0 50px rgba(231, 76, 60, 1))
                         drop-shadow(0 0 150px rgba(243, 156, 18, 1));
             }
+        }
+
+        /* 滚动时的模糊轨迹效果 */
+        .spin-trail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, 
+                rgba(243, 156, 18, 0.3) 0%, 
+                transparent 50%, 
+                rgba(231, 76, 60, 0.3) 100%);
+            animation: trailPulse 0.1s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes trailPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
         /* 中奖光芒效果 */
@@ -618,8 +671,10 @@
         <div class="slot-machine">
             <div class="slot-window">
                 <div class="slot-reel">
+                    <div class="reel-strip" id="reelStrip"></div>
                     <div class="slot-item" id="slotItem">🎰 准备</div>
                     <div class="win-glow" id="winGlow" style="display: none;"></div>
+                    <div class="spin-trail" id="spinTrail" style="display: none;"></div>
                 </div>
             </div>
         </div>
@@ -721,7 +776,7 @@
             document.getElementById('spinCount').textContent = spinCount;
         }
 
-        // 老虎机旋转
+        // 老虎机旋转（改进版 - 显示食物滚动动画）
         function spin() {
             if (isSpinning) return;
             if (options.length === 0) {
@@ -734,6 +789,8 @@
             const spinBtn = document.getElementById('spinBtn');
             const lever = document.getElementById('lever');
             const winGlow = document.getElementById('winGlow');
+            const reelStrip = document.getElementById('reelStrip');
+            const spinTrail = document.getElementById('spinTrail');
             
             // 拉杆动画
             lever.classList.add('pulling');
@@ -744,26 +801,67 @@
             slotItem.classList.add('spinning');
             slotItem.classList.remove('winner');
             winGlow.style.display = 'none';
-
-            let speed = 80;
-            let elapsed = 0;
-            const totalDuration = 4000; // 4 秒
-
-            const spinInterval = setInterval(() => {
+            
+            // 显示滚动条带和轨迹
+            spinTrail.style.display = 'block';
+            reelStrip.innerHTML = '';
+            
+            // 创建滚动的食物列表（重复多次形成循环效果）
+            const totalItems = 30;
+            for (let i = 0; i < totalItems; i++) {
                 const randomIndex = Math.floor(Math.random() * options.length);
-                slotItem.textContent = options[randomIndex];
-                elapsed += speed;
-
+                const item = document.createElement('div');
+                item.className = 'reel-item';
+                item.textContent = options[randomIndex];
+                reelStrip.appendChild(item);
+            }
+            
+            // 滚动动画
+            let currentPosition = 0;
+            const itemHeight = 80;
+            const totalHeight = totalItems * itemHeight;
+            let speed = 15;
+            let elapsed = 0;
+            const totalDuration = 4000;
+            
+            const scrollInterval = setInterval(() => {
+                elapsed += 100;
+                
                 // 逐渐减速
-                if (elapsed > totalDuration * 0.5) {
-                    speed += 30;
+                if (elapsed > totalDuration * 0.3) {
+                    speed *= 0.92;
                 }
+                
+                if (elapsed > totalDuration * 0.7) {
+                    speed *= 0.85;
+                }
+                
+                currentPosition += speed;
+                
+                // 循环滚动
+                if (currentPosition >= totalHeight) {
+                    currentPosition = 0;
+                }
+                
+                reelStrip.style.transform = `translateY(-${currentPosition}px)`;
+                
+                // 更新中间显示的食物（取当前滚动位置附近的食物）
+                const currentIndex = Math.floor(currentPosition / itemHeight) % options.length;
+                slotItem.textContent = options[currentIndex];
 
                 if (elapsed >= totalDuration) {
-                    clearInterval(spinInterval);
+                    clearInterval(scrollInterval);
+                    // 最终随机选择一个食物
+                    const finalIndex = Math.floor(Math.random() * options.length);
+                    slotItem.textContent = options[finalIndex];
+                    
+                    // 清理滚动条带
+                    reelStrip.innerHTML = '';
+                    spinTrail.style.display = 'none';
+                    
                     finalizeSelection(slotItem, spinBtn, winGlow);
                 }
-            }, speed);
+            }, 100);
         }
 
         // 完成选择
